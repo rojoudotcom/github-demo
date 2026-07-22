@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GitHub Flow Task Board</title>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="app__header">
+        <h1 class="app__title">Task Board</h1>
+        <p class="app__subtitle">
+          A GitHub Flow demo — ship changes via branch, PR, CI, and Pages.
+        </p>
+      </header>
+
+      <form id="new-task-form" class="new-task" data-testid="new-task-form">
+        <input
+          id="new-task-input"
+          class="new-task__input"
+          type="text"
+          placeholder="What needs to be done?"
+          autocomplete="off"
+          aria-label="New task title"
+          data-testid="new-task-input"
+        />
+        <button type="submit" class="new-task__submit" data-testid="add-button">Add</button>
+      </form>
+
+      <div class="toolbar">
+        <p class="toolbar__count">
+          <span id="remaining-count" data-testid="remaining-count">0</span> left
+        </p>
+        <div class="toolbar__filters" role="group" aria-label="Filter tasks">
+          <button type="button" data-filter="all" aria-pressed="true" data-testid="filter-all">
+            All
+          </button>
+          <button
+            type="button"
+            data-filter="active"
+            aria-pressed="false"
+            data-testid="filter-active"
+          >
+            Active
+          </button>
+          <button
+            type="button"
+            data-filter="completed"
+            aria-pressed="false"
+            data-testid="filter-completed"
+          >
+            Completed
+          </button>
+        </div>
+      </div>
+
+      <ul id="task-list" class="task-list" data-testid="task-list"></ul>
+      <p id="empty-state" class="empty-state" data-testid="empty-state">No tasks here yet.</p>
+    </main>
+
+    <footer class="app-footer">
+      <a
+        href="https://docs.github.com/get-started/using-github/github-flow"
+        target="_blank"
+        rel="noreferrer"
+        >What is GitHub Flow?</a
+      >
+    </footer>
+
+    <script type="module" src="src/app.js"></script>
+  </body>
+</html>
