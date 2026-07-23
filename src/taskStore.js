@@ -1,11 +1,11 @@
-// Pure, DOM-free task state logic.
+// タスクの状態を扱う「純粋ロジック」。DOM には一切触れません。
 //
-// Every function is a pure function over an array of tasks: it never mutates its
-// input and always returns a new value. Keeping the logic free of the DOM and of
-// localStorage is what lets the same code be exercised by fast unit tests
-// (test/unit) and by the browser app (src/app.js).
+// ここにある関数はすべて「タスク配列を受け取り、新しい配列を返す」純粋関数です。
+// 引数を書き換えず（イミュータブル）、同じ入力なら常に同じ出力を返します。
+// DOM や localStorage から切り離してあるからこそ、ブラウザを起動せずに
+// 高速なユニットテスト（test/unit）で検証できます。
 //
-// A task is: { id: number, title: string, completed: boolean }
+// タスクの形: { id: number, title: string, completed: boolean }
 
 export const FILTERS = Object.freeze({
   ALL: 'all',
@@ -14,24 +14,23 @@ export const FILTERS = Object.freeze({
 });
 
 /**
- * Append a new task. Titles are trimmed; empty titles are rejected.
- * The new id is one greater than the current maximum, so ids stay unique
- * without relying on any external counter.
+ * タスクを1件追加する。タイトルは前後の空白を除去し、空文字なら拒否する。
+ * 新しい id は「現在の最大 id + 1」。外部カウンターに頼らず一意性を保てる。
  * @param {Array} tasks
  * @param {string} title
- * @returns {Array} a new array with the task appended
+ * @returns {Array} タスクを末尾に加えた新しい配列
  */
 export function addTask(tasks, title) {
   const trimmed = String(title ?? '').trim();
   if (!trimmed) {
-    throw new Error('Task title must not be empty');
+    throw new Error('タスクのタイトルは空にできません');
   }
   const nextId = tasks.reduce((max, task) => Math.max(max, task.id), 0) + 1;
   return [...tasks, { id: nextId, title: trimmed, completed: false }];
 }
 
 /**
- * Flip the completed flag of the task with the given id.
+ * 指定した id のタスクの完了フラグを反転する。
  * @param {Array} tasks
  * @param {number} id
  * @returns {Array}
@@ -41,7 +40,7 @@ export function toggleTask(tasks, id) {
 }
 
 /**
- * Remove the task with the given id.
+ * 指定した id のタスクを削除する。
  * @param {Array} tasks
  * @param {number} id
  * @returns {Array}
@@ -51,9 +50,9 @@ export function deleteTask(tasks, id) {
 }
 
 /**
- * Return only the tasks that match the active filter.
+ * 絞り込み条件に一致するタスクだけを返す。
  * @param {Array} tasks
- * @param {string} filter one of FILTERS
+ * @param {string} filter FILTERS のいずれか
  * @returns {Array}
  */
 export function filterTasks(tasks, filter) {
@@ -68,7 +67,7 @@ export function filterTasks(tasks, filter) {
 }
 
 /**
- * Count the tasks that are still active (not completed).
+ * 未完了（completed が false）のタスク数を数える。
  * @param {Array} tasks
  * @returns {number}
  */

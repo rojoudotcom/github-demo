@@ -1,5 +1,5 @@
-// A tiny static file server with zero dependencies (Node standard library only).
-// Used locally (`npm run serve`) and by Playwright's webServer during E2E tests.
+// 依存パッケージゼロ（Node 標準ライブラリだけ）の小さな静的ファイルサーバ。
+// ローカルで動作確認するとき（`npm run serve`）に使います。
 
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
@@ -18,7 +18,7 @@ const MIME_TYPES = {
 };
 
 const server = createServer(async (req, res) => {
-  // Strip the query string and prevent path traversal above ROOT.
+  // クエリ文字列を取り除き、ROOT より上の階層への遡り（パストラバーサル）を防ぐ。
   const requestPath = decodeURIComponent((req.url || '/').split('?')[0]);
   const relativePath = normalize(requestPath).replace(/^(\.\.[/\\])+/, '');
   const filePath = join(ROOT, relativePath === '/' ? 'index.html' : relativePath);
@@ -36,5 +36,5 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(PORT, () => {
-  console.log(`Serving ${ROOT} at http://localhost:${PORT}`);
+  console.log(`${ROOT} を http://localhost:${PORT} で配信しています`);
 });

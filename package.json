@@ -3,16 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "A vanilla HTML/CSS/JS task board that demonstrates the GitHub Flow: branch, PR, CI, merge, and deploy to GitHub Pages.",
+  "description": "GitHub Flow（ブランチ・PR・CI・マージ・GitHub Pages への公開）を実演する、素の HTML/CSS/JS で作ったタスクボード。",
   "scripts": {
     "serve": "node scripts/serve.mjs",
     "test": "node --test test/unit/*.test.js",
-    "test:e2e": "playwright test",
     "lint": "eslint . && prettier --check .",
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "@playwright/test": "^1.48.0",
     "eslint": "^9.13.0",
     "prettier": "^3.3.3"
   }
