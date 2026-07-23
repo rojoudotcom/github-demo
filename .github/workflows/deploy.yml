@@ -1,33 +1,33 @@
 name: Deploy to GitHub Pages
 
-# Continuous deployment: once a change is merged to main, publish the static
-# site to GitHub Pages. Only the files the browser needs are uploaded.
+# 継続的デリバリー: main に変更がマージされたら、静的サイトを GitHub Pages へ公開する。
+# ブラウザに必要なファイルだけをアップロードする。
 on:
   push:
     branches: [main]
   workflow_dispatch:
 
-# Permissions required by the official Pages deployment actions.
+# 公式の Pages デプロイ用アクションが必要とする権限。
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment; do not cancel an in-progress one.
+# デプロイは同時に1つだけ許可し、実行中のものはキャンセルしない。
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
   deploy:
-    name: Build and deploy
+    name: ビルドしてデプロイ
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Assemble the site
+      - name: 公開用ファイルをまとめる
         run: |
           mkdir -p public
           cp index.html public/
@@ -37,6 +37,6 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public
-      - name: Deploy
+      - name: デプロイ
         id: deployment
         uses: actions/deploy-pages@v4

@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>GitHub Flow Task Board</title>
+    <title>GitHub Flow タスクボード</title>
     <link rel="stylesheet" href="src/styles.css" />
   </head>
   <body>
     <main class="app">
       <header class="app__header">
-        <h1 class="app__title">Task Board</h1>
+        <h1 class="app__title">タスクボード</h1>
         <p class="app__subtitle">
-          A GitHub Flow demo — ship changes via branch, PR, CI, and Pages.
+          ブランチ → PR → CI → GitHub Pages でリリースする GitHub Flow のデモです。
         </p>
       </header>
 
@@ -20,9 +20,9 @@
           id="new-task-input"
           class="new-task__input"
           type="text"
-          placeholder="What needs to be done?"
+          placeholder="やることを入力…"
           autocomplete="off"
-          aria-label="New task title"
+          aria-label="新しいタスクのタイトル"
           data-testid="new-task-input"
         />
         <button type="submit" class="new-task__submit" data-testid="add-button">追加</button>
@@ -30,11 +30,11 @@
 
       <div class="toolbar">
         <p class="toolbar__count">
-          <span id="remaining-count" data-testid="remaining-count">0</span> left
+          残り <span id="remaining-count" data-testid="remaining-count">0</span> 件
         </p>
-        <div class="toolbar__filters" role="group" aria-label="Filter tasks">
+        <div class="toolbar__filters" role="group" aria-label="タスクの絞り込み">
           <button type="button" data-filter="all" aria-pressed="true" data-testid="filter-all">
-            All
+            すべて
           </button>
           <button
             type="button"
@@ -42,7 +42,7 @@
             aria-pressed="false"
             data-testid="filter-active"
           >
-            Active
+            未完了
           </button>
           <button
             type="button"
@@ -50,21 +50,21 @@
             aria-pressed="false"
             data-testid="filter-completed"
           >
-            Completed
+            完了
           </button>
         </div>
       </div>
 
       <ul id="task-list" class="task-list" data-testid="task-list"></ul>
-      <p id="empty-state" class="empty-state" data-testid="empty-state">No tasks here yet.</p>
+      <p id="empty-state" class="empty-state" data-testid="empty-state">タスクはまだありません。</p>
     </main>
 
     <footer class="app-footer">
       <a
-        href="https://docs.github.com/get-started/using-github/github-flow"
+        href="https://docs.github.com/ja/get-started/using-github/github-flow"
         target="_blank"
         rel="noreferrer"
-        >What is GitHub Flow?</a
+        >GitHub Flow とは？</a
       >
     </footer>
 

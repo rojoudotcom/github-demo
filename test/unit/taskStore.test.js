@@ -1,5 +1,10 @@
-// Unit tests for the pure task logic, using Node's built-in test runner.
-// Run with: npm test  (which calls `node --test test/unit`)
+// taskStore.js（純粋ロジック）のユニットテスト。Node 標準のテストランナーを使う。
+// 実行: npm test （内部では `node --test test/unit/*.test.js` を呼ぶ）
+//
+// ユニットテストは「一番小さな単位（＝ここでは純粋関数）」を、ブラウザを起動せずに
+// 単体で検証するテストです。純粋関数は「入力 → 期待する出力」を突き合わせるだけで
+// 済むため、DOM や保存領域を用意する必要がなく、ミリ秒で終わります。
+// PR ごとに CI がこれを回し、ロジックの取り違えがあれば即座に赤で知らせます。
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -13,59 +18,66 @@ import {
   FILTERS,
 } from '../../src/taskStore.js';
 
-test('addTask appends a new active task with a unique id', () => {
-  const result = addTask([], 'Write tests');
+test('addTask: 新しい未完了タスクを一意の id で末尾に追加する', () => {
+  const result = addTask([], 'テストを書く');
   assert.equal(result.length, 1);
-  assert.equal(result[0].title, 'Write tests');
+  assert.equal(result[0].title, 'テストを書く');
   assert.equal(result[0].completed, false);
   assert.equal(result[0].id, 1);
 
-  const next = addTask(result, 'Open a PR');
+  const next = addTask(result, 'PR を出す');
   assert.equal(next[1].id, 2);
 });
 
-test('addTask trims whitespace from the title', () => {
-  const result = addTask([], '  spaced  ');
-  assert.equal(result[0].title, 'spaced');
+test('addTask: タイトル前後の空白を取り除く', () => {
+  const result = addTask([], '  余白つき  ');
+  assert.equal(result[0].title, '余白つき');
 });
 
-test('addTask rejects empty or whitespace-only titles', () => {
+test('addTask: 空文字・空白だけのタイトルは拒否する', () => {
   assert.throws(() => addTask([], ''));
   assert.throws(() => addTask([], '   '));
 });
 
-test('addTask does not mutate the input array', () => {
+test('addTask: 引数の配列を書き換えない（イミュータブル）', () => {
   const original = [];
-  addTask(original, 'Ship it');
+  addTask(original, 'リリースする');
   assert.equal(original.length, 0);
 });
 
-test('toggleTask flips only the matching task', () => {
+test('toggleTask: 指定した id のタスクだけ完了フラグを反転する', () => {
   const tasks = addTask(addTask([], 'a'), 'b');
   const toggled = toggleTask(tasks, 1);
   assert.equal(toggled[0].completed, true);
   assert.equal(toggled[1].completed, false);
 });
 
-test('deleteTask removes only the matching task', () => {
+test('toggleTask: もう一度呼ぶと元の状態に戻る', () => {
+  let tasks = addTask([], 'a');
+  tasks = toggleTask(tasks, 1);
+  tasks = toggleTask(tasks, 1);
+  assert.equal(tasks[0].completed, false);
+});
+
+test('deleteTask: 指定した id のタスクだけ削除する', () => {
   const tasks = addTask(addTask([], 'a'), 'b');
   const remaining = deleteTask(tasks, 1);
   assert.equal(remaining.length, 1);
   assert.equal(remaining[0].title, 'b');
 });
 
-test('filterTasks returns the right subset per filter', () => {
-  let tasks = addTask(addTask([], 'active one'), 'done one');
+test('filterTasks: 絞り込み条件ごとに正しい部分集合を返す', () => {
+  let tasks = addTask(addTask([], '未完了のタスク'), '完了したタスク');
   tasks = toggleTask(tasks, 2);
 
   assert.equal(filterTasks(tasks, FILTERS.ALL).length, 2);
   assert.equal(filterTasks(tasks, FILTERS.ACTIVE).length, 1);
-  assert.equal(filterTasks(tasks, FILTERS.ACTIVE)[0].title, 'active one');
+  assert.equal(filterTasks(tasks, FILTERS.ACTIVE)[0].title, '未完了のタスク');
   assert.equal(filterTasks(tasks, FILTERS.COMPLETED).length, 1);
-  assert.equal(filterTasks(tasks, FILTERS.COMPLETED)[0].title, 'done one');
+  assert.equal(filterTasks(tasks, FILTERS.COMPLETED)[0].title, '完了したタスク');
 });
 
-test('remainingCount counts only active tasks', () => {
+test('remainingCount: 未完了のタスクだけ数える', () => {
   let tasks = addTask(addTask(addTask([], 'a'), 'b'), 'c');
   assert.equal(remainingCount(tasks), 3);
   tasks = toggleTask(tasks, 2);

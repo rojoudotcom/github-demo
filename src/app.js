@@ -1,9 +1,9 @@
-// DOM wiring for the Task Board.
+// タスクボードの DOM 配線。
 //
-// This module owns the browser-only concerns — reading/writing localStorage and
-// rendering to the DOM — and delegates every state transition to the pure
-// functions in taskStore.js. The rule of thumb: no business logic lives here,
-// only "read the DOM / call a pure function / write the DOM".
+// このモジュールはブラウザ固有の処理だけを担当します
+// （localStorage の読み書きと DOM への描画）。状態の変化そのものは
+// すべて taskStore.js の純粋関数に任せます。指針は「DOM を読む →
+// 純粋関数を呼ぶ → DOM を書く」だけで、業務ロジックはここに書きません。
 
 import {
   addTask,
@@ -31,7 +31,7 @@ function load() {
     const raw = localStorage.getItem(STORAGE_KEY);
     return raw ? JSON.parse(raw) : [];
   } catch {
-    // Corrupt or unavailable storage should never break the app: start empty.
+    // 保存データが壊れている・使えない場合でもアプリを止めない。空で始める。
     return [];
   }
 }
@@ -53,7 +53,7 @@ function buildTaskItem(task) {
   checkbox.dataset.testid = 'task-checkbox';
   checkbox.setAttribute(
     'aria-label',
-    `Mark "${task.title}" as ${task.completed ? 'active' : 'completed'}`,
+    `「${task.title}」を${task.completed ? '未完了' : '完了'}にする`,
   );
   checkbox.addEventListener('change', () => {
     tasks = toggleTask(tasks, task.id);
@@ -70,7 +70,7 @@ function buildTaskItem(task) {
   remove.className = 'task__delete';
   remove.textContent = '×';
   remove.dataset.testid = 'task-delete';
-  remove.setAttribute('aria-label', `Delete "${task.title}"`);
+  remove.setAttribute('aria-label', `「${task.title}」を削除`);
   remove.addEventListener('click', () => {
     tasks = deleteTask(tasks, task.id);
     save();
