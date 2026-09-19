@@ -1,4 +1,3 @@
-// 表示文言はここでまとめる
 // タスクの状態を扱う「純粋ロジック」。DOM には一切触れません。
 //
 // ここにある関数はすべて「タスク配列を受け取り、新しい配列を返す」純粋関数です。
@@ -74,13 +73,4 @@ export function filterTasks(tasks, filter) {
  */
 export function remainingCount(tasks) {
   return tasks.filter((task) => !task.completed).length;
-}
-
-/**
- * 残りのタスク数を画面に出す文言にする。
- * @param {Array} tasks
- * @returns {string}
- */
-export function remainingLabel(tasks) {
-  return `残り ${remainingCount(tasks)} 件`;
 }
