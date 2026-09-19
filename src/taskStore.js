@@ -74,3 +74,13 @@ export function filterTasks(tasks, filter) {
 export function remainingCount(tasks) {
   return tasks.filter((task) => !task.completed).length;
 }
+
+/**
+ * 残りのタスク数を画面に出す文言にする。
+ * @param {Array} tasks
+ * @returns {string}
+ */
+export function remainingLabel(tasks) {
+  const total = tasks.length;
+  return `残り ${remainingCount(tasks)} 件`;
+}
