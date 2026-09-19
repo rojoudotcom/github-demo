@@ -81,6 +81,5 @@ export function remainingCount(tasks) {
  * @returns {string}
  */
 export function remainingLabel(tasks) {
-  const total = tasks.length;
   return `残り ${remainingCount(tasks)} 件`;
 }
